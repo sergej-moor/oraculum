@@ -2,7 +2,14 @@
 export default {
   content: ["./src/**/*.{html,js,svelte,ts}"],
   theme: {
-    extend: {},
+    extend: {
+      screens: {
+        xs: "420px",
+      },
+      boxShadow: {
+        table: "0 0px 100px 50px rgb(0 0 0 / 0.25)",
+      },
+    },
   },
   plugins: [],
 };
