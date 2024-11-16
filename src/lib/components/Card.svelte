@@ -16,6 +16,25 @@
   let textElement = $state<HTMLSpanElement | null>(null);
   let imageElement = $state<HTMLImageElement | null>(null);
 
+  // Import all card images at build time
+  const images = import.meta.glob('/src/assets/cards/**/*.webp', {
+    eager: true,
+    import: 'default'
+  });
+
+  $effect(() => {
+    if (cardData?.image) {
+      const imagePath = cardData.image.replace('$assets', '/src/assets');
+      if (imagePath in images) {
+        cardImage = images[imagePath] as string;
+      } else {
+        error = `Image not found: ${imagePath}`;
+        console.error('Available images:', Object.keys(images));
+        console.error('Attempted path:', imagePath);
+      }
+    }
+  });
+
   // Create floating animation for text
   $effect(() => {
     if (textElement) {
@@ -42,27 +61,6 @@
         yoyo: true,
         repeat: -1
       });
-    }
-  });
-
-  $effect(() => {
-    if (cardData?.image) {
-      const imagePath = cardData.image.replace('$assets', '/src/assets');
-      
-      try {
-        import(/* @vite-ignore */ imagePath)
-          .then(module => {
-            cardImage = module.default;
-            console.log('Image loaded:', imagePath);
-          })
-          .catch(err => {
-            error = `Failed to load image: ${imagePath}`;
-            console.error('Image load error:', err);
-          });
-      } catch (err) {
-        error = `Invalid image path: ${imagePath}`;
-        console.error('Image path error:', err);
-      }
     }
   });
 </script>
