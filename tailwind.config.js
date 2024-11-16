@@ -9,6 +9,12 @@ export default {
       boxShadow: {
         table: "0 0px 100px 50px rgb(0 0 0 / 0.25)",
       },
+      aspectRatio: {
+        card: "1024/1820", // or approximately '16/9'
+      },
+      fontFamily: {
+        chokokutai: ["Chokokutai", "serif"],
+      },
     },
   },
   plugins: [],

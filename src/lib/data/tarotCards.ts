@@ -8,26 +8,26 @@ export const tarotCards: TarotCard[] = [
   {
     id: 0,
     name: "The Fool",
-    image: "/cards/fool.jpg",
+    image: "$assets/cards/major/fool.webp",
   },
   {
     id: 1,
     name: "The Magician",
-    image: "/cards/magician.jpg",
+    image: "$assets/cards/major/the_magician_2024-11-16T00-23-23-311Z.webp",
   },
   {
     id: 2,
     name: "The High Priestess",
-    image: "/cards/priestess.jpg",
+    image: "$assets/cards/major/the_high_priestess.webp",
   },
   {
     id: 3,
     name: "The Empress",
-    image: "/cards/empress.jpg",
+    image: "$assets/cards/major/the_empress.webp",
   },
   {
     id: 4,
     name: "The Emperor",
-    image: "/cards/emperor.jpg",
+    image: "$assets/cards/major/the_emperor.webp",
   },
 ];
