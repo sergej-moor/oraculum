@@ -1,18 +1,20 @@
 <script lang="ts">
-  import { tarotCards, type TarotCard } from '../data/tarotCards';
+  import { readingStore } from '$lib/stores/readingStore';
+  import { tarotCards } from '../data/tarotCards';
   import Card from './Card.svelte';
   import Modal from './Modal.svelte';
   import gsap from 'gsap';
 
-  let drawnCards = $state<TarotCard[]>([]);
-  let isDrawing = $state(false);
-  let flippedStates = $state<boolean[]>([]);
-  let selectedCard = $state<TarotCard | null>(null);
-  let isFlipping = $state(false);
-  let cardContainers: HTMLElement[] = [];
+  let cardContainers: (HTMLElement | null)[] = [];
+  let cards = $state<TarotCard[]>([]);
+  let isAnimating = $state(false);
+  let hasDrawn = $state(false);
 
   function bindContainer(node: HTMLElement, index: number) {
     cardContainers[index] = node;
+    if (cardContainers.filter(c => c !== null).length === cards.length && !hasDrawn) {
+      requestAnimationFrame(() => animateCards());
+    }
     return {
       destroy() {
         cardContainers[index] = null;
@@ -20,84 +22,74 @@
     };
   }
 
-  function drawCards() {
-    if (isDrawing || drawnCards.length > 0) return;
-    isDrawing = true;
+  function animateCards() {
+    if (isAnimating || hasDrawn) return;
     
-    // First set the cards data
-    drawnCards = [...tarotCards]
-      .sort(() => Math.random() - 0.5)
-      .slice(0, 3);
-    flippedStates = new Array(drawnCards.length).fill(false);
+    const validContainers = cardContainers.filter((container): container is HTMLElement => container !== null);
+    if (validContainers.length !== cards.length) return;
+    
+    isAnimating = true;
+    validContainers.forEach(container => {
+      container.style.opacity = '0';
+      container.style.transform = 'translateY(-100px) scale(0.3)';
+    });
 
-    // After the DOM updates, animate the cards
-    setTimeout(() => {
-      gsap.fromTo(cardContainers, 
-        {
-          opacity: 0,
-          scale: 0.3,
-          y: -100,
-        },
-        {
-          opacity: 1,
-          scale: 1,
-          y: 0,
-          duration: 0.5,
-          stagger: 0.15,
-          ease: "back.out(1.7)",
-          onComplete: () => {
-            isDrawing = false;
-          }
-        }
-      );
-    }, 0);
+    gsap.to(validContainers, {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      duration: 0.5,
+      stagger: 0.15,
+      ease: "back.out(1.7)",
+      onComplete: () => {
+        isAnimating = false;
+        hasDrawn = true;
+        readingStore.drawCards(cards);
+      }
+    });
   }
 
+  $effect(() => {
+    if ($readingStore.state === 'drawing' && !isAnimating && !hasDrawn) {
+      cardContainers = [];
+      cards = [...tarotCards]
+        .sort(() => Math.random() - 0.5)
+        .slice(0, 3);
+    }
+  });
+
   function handleCardClick(index: number) {
-    if (isFlipping) return;
-    
-    if (!flippedStates[index]) {
-      isFlipping = true;
-      flippedStates[index] = true;
+    if (!$readingStore.isFlipping && 
+        !isAnimating && 
+        !$readingStore.isReading && 
+        index === $readingStore.currentCardIndex) {
+      readingStore.flipCard(index);
       setTimeout(() => {
-        selectedCard = drawnCards[index];
-        isFlipping = false;
+        readingStore.showModal(index);
       }, 700);
-    } else {
-      selectedCard = drawnCards[index];
     }
   }
 
-  function closeModal() {
-    selectedCard = null;
-  }
+  $effect(() => {
+    if ($readingStore.state === 'intro') {
+      hasDrawn = false;
+      cards = [];
+      cardContainers = [];
+    }
+  });
 </script>
 
 <div class="flex flex-col h-full w-full p-1 md:p-2">
-  <!-- Deck and button -->
-  <div class="flex flex-col items-center gap-1 mb-2">
-    <button 
-      on:click={drawCards}
-      disabled={isDrawing || drawnCards.length > 0}
-      class="px-2 py-1 md:px-3 md:py-1.5 bg-purple-700 text-white rounded-lg hover:bg-purple-600 
-             disabled:bg-gray-500 disabled:cursor-not-allowed transition-colors
-             text-xs md:text-sm"
-    >
-      Draw Cards
-    </button>
-  </div>
-
-  <!-- Drawn cards display -->
-  {#if drawnCards.length > 0}
-    <div class="grid grid-rows-2 grid-cols-3 gap-0.5 xs:gap-1 md:gap-2 lg:gap-3 h-[calc(100%-100px)]" >
-      {#each drawnCards as card, i}
+  {#if cards.length > 0}
+    <div class="grid grid-rows-2 grid-cols-3 gap-0.5 xs:gap-1 md:gap-2 lg:gap-3 h-[calc(100%-100px)]">
+      {#each cards as card, i}
         <div 
           class="flex items-center justify-center w-full h-full"
           use:bindContainer={i}
         >
           <Card 
             cardData={card}
-            isFlipped={flippedStates[i]}
+            isFlipped={$readingStore.flippedCards[i]}
             onFlip={() => handleCardClick(i)}
             position={i}
             cardNumber={i + 1}
@@ -108,6 +100,9 @@
   {/if}
 </div>
 
-{#if selectedCard}
-  <Modal card={selectedCard} onClose={closeModal} />
+{#if $readingStore.selectedCard}
+  <Modal 
+    card={$readingStore.selectedCard} 
+    onClose={() => readingStore.closeModal()} 
+  />
 {/if}
