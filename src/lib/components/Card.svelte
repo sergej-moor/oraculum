@@ -3,12 +3,13 @@
   import type { TarotCard } from '$lib/data/tarotCards';
   import gsap from 'gsap';
 
-  const { cardData, isFlipped, onFlip, position, cardNumber } = $props<{
+  const { cardData, isFlipped, onFlip, position, cardNumber, isModal = false } = $props<{
     cardData?: TarotCard;
     isFlipped: boolean;
     onFlip: () => void;
     position: number;
     cardNumber: number;
+    isModal?: boolean;
   }>();
 
   let cardImage = $state<string>('');
@@ -66,14 +67,14 @@
 </script>
 
 <button
-  class="w-full aspect-[2/3] 
-         max-w-[70px] xs:max-w-[75px] sm:max-w-[80px] md:max-w-[100px] lg:max-w-[120px]
+  class="w-full aspect-[2/3] relative
+         {isModal ? '' : 'max-w-[70px] xs:max-w-[75px] sm:max-w-[80px] md:max-w-[100px] lg:max-w-[120px]'}
          cursor-pointer preserve-3d transition-transform duration-700"
   style="transform-origin: center; transform: rotateY({isFlipped ? '180deg' : '0deg'});"
-  onclick={onFlip}
+  on:click={onFlip}
 >
   <!-- Card Back -->
-  <div class="absolute w-full h-full backface-hidden">
+  <div class="absolute inset-0 w-full h-full backface-hidden">
     <img 
       src={cardBack} 
       alt="Card back" 
@@ -83,7 +84,7 @@
 
   <!-- Card Front -->
   <div 
-    class="absolute w-full h-full backface-hidden bg-white rounded-lg shadow-lg overflow-hidden"
+    class="absolute inset-0 w-full h-full backface-hidden bg-white rounded-lg  overflow-hidden"
     style="transform: rotateY(180deg);"
   >
     {#if error}
@@ -125,6 +126,7 @@
 <style>
   .preserve-3d {
     transform-style: preserve-3d;
+    perspective: 1000px;
   }
   .backface-hidden {
     backface-visibility: hidden;
@@ -137,7 +139,6 @@
     backface-visibility: hidden;
     perspective: 1000px;
     will-change: transform;
-
     letter-spacing: 0.5px;
   }
 </style> 

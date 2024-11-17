@@ -1,10 +1,12 @@
 <script lang="ts">
   import { tarotCards, type TarotCard } from '../data/tarotCards';
   import Card from './Card.svelte';
+  import Modal from './Modal.svelte';
 
   let drawnCards = $state<TarotCard[]>([]);
   let isDrawing = $state(false);
   let flippedStates = $state<boolean[]>([]);
+  let selectedCard = $state<TarotCard | null>(null);
 
   function drawCards() {
     if (isDrawing || drawnCards.length > 0) return;
@@ -13,14 +15,21 @@
     drawnCards = [...tarotCards]
       .sort(() => Math.random() - 0.5)
       .slice(0, 3);
-
+    flippedStates = new Array(drawnCards.length).fill(false);
     isDrawing = false;
   }
 
   function handleFlip(index: number) {
     if (!flippedStates[index]) {
       flippedStates[index] = true;
+      setTimeout(() => {
+        selectedCard = drawnCards[index];
+      }, 700);
     }
+  }
+
+  function closeModal() {
+    selectedCard = null;
   }
 </script>
 
@@ -28,7 +37,7 @@
   <!-- Deck and button -->
   <div class="flex flex-col items-center gap-1 mb-2">
     <button 
-      onclick={drawCards}
+      on:click={drawCards}
       disabled={isDrawing || drawnCards.length > 0}
       class="px-2 py-1 md:px-3 md:py-1.5 bg-purple-700 text-white rounded-lg hover:bg-purple-600 
              disabled:bg-gray-500 disabled:cursor-not-allowed transition-colors
@@ -54,4 +63,8 @@
       {/each}
     </div>
   {/if}
-</div> 
+</div>
+
+{#if selectedCard}
+  <Modal card={selectedCard} onClose={closeModal} />
+  {/if}
