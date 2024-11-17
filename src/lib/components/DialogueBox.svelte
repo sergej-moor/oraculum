@@ -1,5 +1,6 @@
 <script lang="ts">
     import {onDestroy} from "svelte"
+    import {Sparkle} from "lucide-svelte"
   const { messages = [] } = $props<{
     messages: string[];
   }>();
@@ -62,30 +63,23 @@
 </script>
 
 <div 
-  class="bg-slate-800/90 text-white p-4 rounded-lg shadow-lg border border-slate-600
-         max-w-2xl mx-auto my-4 min-h-[120px] cursor-pointer"
+  class=" text-white  border-white border-2 rounded-xl text-center
+         max-w-2xl mx-auto p-4  h-full  cursor-pointer w-full"
   onclick={nextMessage}
   onkeydown={e => e.key === ' ' || e.key === 'Enter' ? nextMessage() : null}
   role="button"
   tabindex="0"
 >
-  <p class="font-pixel text-lg leading-relaxed">
+  <p class=" text-lg leading-relaxed ">
     {currentMessage}
     {#if isTyping}
-      <span class="animate-pulse">▊</span>
+      <span class="animate-pulse">|</span>
     {/if}
   </p>
   {#if !isTyping && messageIndex < messages.length - 1}
-    <div class="text-sm text-slate-400 mt-2 animate-bounce">
+    <div class="text-sm text-slate-400 mt-2 animate-bounce ">
       Click to continue...
     </div>
   {/if}
 </div>
 
-<style>
-  .font-pixel {
-    font-family: 'Press Start 2P', system-ui, sans-serif;
-    -webkit-font-smoothing: none;
-    font-smooth: never;
-  }
-</style> 

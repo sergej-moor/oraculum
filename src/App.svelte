@@ -112,48 +112,26 @@
     "Let the cards reveal your path...",
   ];
 </script>
-<DialogueBox messages={dialogueMessages} />
-<div class="flex justify-center items-center min-h-screen bg-gray-900 overflow-hidden">
-  <div class="relative w-full self-start shadow-table shadow-purple-950 h-48 sm:h-80 md:h-96 lg:h-[32rem] bg-purple-950">
-    {#if showCards}
-      {#each Array(3) as _, i (i)}
-        <div 
-          bind:this={cardElements[i]}
-          class="absolute left-1/2 top-1/4 -translate-x-1/2 -translate-y-1/2"
-        >
-          <Card 
-            position={i}
-            cardNumber={i + 1}
-            cardData={currentCardData[i]}
-            isFlipped={flippedStates[i]}
-            onFlip={() => handleFlip(i)}
-          />
-        </div>
-      {/each}
-    {/if}
+<div class="overflow-hidden bg-repeat flex flex-col justify-center items-center min-h-screen w-screen" style="background-image: url('/background.png');">
+  <div class="overflow-hidden bg-repeat flex flex-col md:flex-row  md:justify-center 
+              w-full max-w-[95%] md:max-w-screen-md lg:max-w-screen-lg 
+              h-[90vh] md:h-[70vh] lg:h-[80vh] 
+               items-center gap-4 ">
+    <!-- fortune teller -->
+    <div class="xs:max-w-sm w-full md:w-2/5 h-1/2 md:h-full flex flex-col gap-2 md:gap-4">
+      <img 
+        src="/fortune-teller.webp" 
+        class="border-white border-2 rounded-xl object-cover h-3/5 " 
+        alt="Fortune teller"
+      >
+      <DialogueBox messages={dialogueMessages} />
+    </div>
+
+    <!-- card area -->
+    <div class="border-white border-2 rounded-xl w-full md:w-3/5 h-1/2 md:h-full xs:max-w-sm md:max-w-full  ">
+    </div>
   </div>
-
-
-
-  <div class="absolute bottom-4 sm:bottom-6 md:bottom-8 lg:bottom-10 flex gap-2 sm:gap-4">
-    <button
-      class="px-3 py-2 sm:px-4 sm:py-2 md:px-5 md:py-3 lg:px-6 lg:py-3 
-             bg-white rounded-lg text-blue-800 text-sm sm:text-base md:text-lg font-bold
-             hover:bg-gray-100 transition-colors disabled:opacity-50"
-      on:click={dealCards}
-      disabled={isDealing || isCollecting || isDealt}
-    >
-      {isDealing ? 'Dealing...' : 'Deal Cards'}
-    </button>
-
-    <button
-      class="px-3 py-2 sm:px-4 sm:py-2 md:px-5 md:py-3 lg:px-6 lg:py-3 
-             bg-white rounded-lg text-blue-800 text-sm sm:text-base md:text-lg font-bold
-             hover:bg-gray-100 transition-colors disabled:opacity-50"
-      on:click={collectCards}
-      disabled={isDealing || isCollecting || !isDealt || !allCardsFlipped}
-    >
-      {isCollecting ? 'Collecting...' : 'Collect Cards'}
-    </button>
-  </div>
-</div>
+  <nav class="text-xs py-1 w-full text-right max-w-[95%] md:max-w-screen-md lg:max-w-screen-lg xs:max-w-sm   text-gray-400">
+    About
+  </nav>
+</div> 
