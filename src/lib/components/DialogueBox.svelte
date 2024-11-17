@@ -9,7 +9,7 @@
   let currentMessage = $state('');
   let messageIndex = $state(0);
   let isTyping = $state(false);
-  let typingSpeed = 5;
+  let typingSpeed = 20;
   let timeoutId: number;
 
   async function typeMessage(message: string) {
@@ -24,6 +24,14 @@
     }
 
     isTyping = false;
+
+    // If this was the last message, automatically complete
+    if (messageIndex === messages.length - 1) {
+      // Small delay before completion to make it feel more natural
+      setTimeout(() => {
+        onComplete();
+      }, 500);
+    }
   }
 
   function nextMessage() {
@@ -32,8 +40,6 @@
     if (messageIndex < messages.length - 1) {
       messageIndex++;
       typeMessage(messages[messageIndex]);
-    } else {
-      onComplete();
     }
   }
 
