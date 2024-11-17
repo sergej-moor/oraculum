@@ -102,8 +102,17 @@
     if (!isDealt || isDealing || isCollecting || flippedStates[index]) return;
     flippedStates[index] = true;
   }
-</script>
 
+
+  import DialogueBox from '$lib/components/DialogueBox.svelte';
+  
+  const dialogueMessages = [
+    "Welcome to the mystical realm of tarot...",
+    "I sense you seek guidance and wisdom...",
+    "Let the cards reveal your path...",
+  ];
+</script>
+<DialogueBox messages={dialogueMessages} />
 <div class="flex justify-center items-center min-h-screen bg-gray-900 overflow-hidden">
   <div class="relative w-full self-start shadow-table shadow-purple-950 h-48 sm:h-80 md:h-96 lg:h-[32rem] bg-purple-950">
     {#if showCards}
@@ -123,6 +132,8 @@
       {/each}
     {/if}
   </div>
+
+
 
   <div class="absolute bottom-4 sm:bottom-6 md:bottom-8 lg:bottom-10 flex gap-2 sm:gap-4">
     <button
