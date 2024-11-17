@@ -3,7 +3,7 @@
   import gsap from 'gsap';
   import Card from './lib/components/Card.svelte';
   import { tarotCards, type TarotCard } from './lib/data/tarotCards';
-
+  import Deck from '$lib/components/Deck.svelte';
   let isDealing = $state(false);
   let isCollecting = $state(false);
   let isDealt = $state(false);
@@ -129,6 +129,7 @@
 
     <!-- card area -->
     <div class="border-white border-2 rounded-xl w-full md:w-3/5 h-1/2 md:h-full xs:max-w-sm md:max-w-full  ">
+      <Deck></Deck>
     </div>
   </div>
   <nav class="text-xs py-1 w-full text-right max-w-[95%] md:max-w-screen-md lg:max-w-screen-lg xs:max-w-sm   text-gray-400">

@@ -66,10 +66,11 @@
 </script>
 
 <button
-  class="w-32 xs:w-40 sm:w-48 md:w-56 lg:w-64
-         aspect-card cursor-pointer preserve-3d transition-transform duration-700"
+  class="w-full aspect-[2/3] 
+         max-w-[70px] xs:max-w-[75px] sm:max-w-[80px] md:max-w-[100px] lg:max-w-[120px]
+         cursor-pointer preserve-3d transition-transform duration-700"
   style="transform-origin: center; transform: rotateY({isFlipped ? '180deg' : '0deg'});"
-  on:click={onFlip}
+  onclick={onFlip}
 >
   <!-- Card Back -->
   <div class="absolute w-full h-full backface-hidden">
