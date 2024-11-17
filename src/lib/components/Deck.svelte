@@ -7,6 +7,7 @@
   let isDrawing = $state(false);
   let flippedStates = $state<boolean[]>([]);
   let selectedCard = $state<TarotCard | null>(null);
+  let isFlipping = $state(false);
 
   function drawCards() {
     if (isDrawing || drawnCards.length > 0) return;
@@ -19,12 +20,20 @@
     isDrawing = false;
   }
 
-  function handleFlip(index: number) {
+  function handleCardClick(index: number) {
+    if (isFlipping) return;
+    
     if (!flippedStates[index]) {
+      // First time flip
+      isFlipping = true;
       flippedStates[index] = true;
       setTimeout(() => {
         selectedCard = drawnCards[index];
+        isFlipping = false;
       }, 700);
+    } else {
+      // Card is already flipped, show modal immediately
+      selectedCard = drawnCards[index];
     }
   }
 
@@ -55,7 +64,7 @@
           <Card 
             cardData={card}
             isFlipped={flippedStates[i]}
-            onFlip={() => handleFlip(i)}
+            onFlip={() => handleCardClick(i)}
             position={i}
             cardNumber={i + 1}
           />
@@ -67,4 +76,4 @@
 
 {#if selectedCard}
   <Modal card={selectedCard} onClose={closeModal} />
-  {/if}
+{/if}
