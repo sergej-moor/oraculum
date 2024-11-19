@@ -1,7 +1,7 @@
 import { writable } from "svelte/store";
 import type { TarotCard } from "$lib/data/tarotCards";
 
-type ReadingState = "intro" | "drawing" | "reading" | "complete";
+export type ReadingState = "intro" | "drawing" | "reading" | "complete";
 
 interface ReadingStore {
   state: ReadingState;
@@ -15,34 +15,30 @@ interface ReadingStore {
 }
 
 function createReadingStore() {
-  const introMessages = [
-    getReadingIntroduction(),
-    getReadingExplanation(),
-    getCardRevealPhrase("past"),
-  ];
+  const introMessages = [getReadingIntroduction(), getReadingExplanation()];
 
   function getCardIntroduction(cardName: string): string {
     const phrases = [
-      `Behold, ${cardName}!`,
-      `Ah yes, ${cardName}.`,
-      `Ah, the ${cardName} reveals itself.`,
-      `Here we have ${cardName}.`,
-      `Oh, it’s ${cardName}!`,
-      `The ${cardName} has come forth.`,
-      `Ah, look, ${cardName}!`,
-      `Ah, the wisdom of ${cardName} graces us.`,
-      `Ah, what a draw: ${cardName}!`,
-      `Hmmm... the ${cardName} makes an appearance.`,
-      `Oh, how intriguing, ${cardName}.`,
-      `Ah, ${cardName}—a sign from beyond.`,
-      `And here it is: ${cardName}.`,
-      `Ah, the ever-revealing ${cardName}.`,
-      `Ah, destiny speaks through ${cardName}.`,
-      `Ah, what clarity ${cardName} brings.`,
-      `Hmm, ${cardName}—how fascinating.`,
-      `Oh, ${cardName}—it holds much to consider.`,
-      `The ${cardName}—what a powerful message.`,
-      `Ah, ${cardName}, the story unfolds.`,
+      `Behold, '${cardName}'!`,
+      `Ah yes, '${cardName}'.`,
+      `Ah, '${cardName}' reveals itself.`,
+      `Here we have '${cardName}'.`,
+      `Oh, it's '${cardName}'!`,
+      `'${cardName}' has come forth.`,
+      `Ah, look, '${cardName}'!`,
+      `Ah, wisdom of '${cardName}' graces us.`,
+      `Ah, what a draw: '${cardName}'!`,
+      `Hmmm... '${cardName}' makes an appearance.`,
+      `Oh, how intriguing, '${cardName}'.`,
+      `Ah, '${cardName}'—a sign from beyond.`,
+      `And here it is: '${cardName}'.`,
+      `Ah, ever-revealing '${cardName}'.`,
+      `Ah, destiny speaks through '${cardName}'.`,
+      `Ah, what clarity '${cardName}' brings.`,
+      `Hmm, '${cardName}'—how fascinating.`,
+      `Oh, '${cardName}'—it holds much to consider.`,
+      `'${cardName}'—what a powerful message.`,
+      `Ah, '${cardName}', the story unfolds.`,
     ];
 
     const randomIndex = Math.floor(Math.random() * phrases.length);
@@ -163,23 +159,19 @@ function createReadingStore() {
     switch (cardNumber) {
       case 0:
         array = card.interpretation.past;
-        time = "present";
+        time = "past";
         break;
       case 1:
         array = card.interpretation.present;
-        time = "future";
+        time = "present";
         break;
       case 2:
         array = card.interpretation.future;
-
+        time = "future";
         break;
     }
     const randomIndex = Math.floor(Math.random() * array.length);
-    return [
-      getCardIntroduction(card.name),
-      array[randomIndex],
-      getCardRevealPhrase(time),
-    ];
+    return [getCardIntroduction(card.name), array[randomIndex]];
   }
 
   const finalMessages = [

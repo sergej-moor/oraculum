@@ -88,7 +88,7 @@
     <div class="grid  grid-cols-3 gap-0.5 xs:gap-1 md:gap-2 lg:gap-3 h-[calc(100%-100px)]">
       {#each cards as card, i}
         <div 
-          class="flex items-center justify-center w-full h-full"
+          class="flex items-start justify-center w-full "
           use:bindContainer={i}
         >
           <Card 

@@ -126,9 +126,9 @@
           <div class="inline-block px-2 sm:px-4 ">
             <span
               bind:this={textElement}
-              class="font-merriweather  text-white 
-                     text-xs lg:text-base 
-                              {isModal ? 'text-[1.2rem] sm:text-3xl lg:text-3xl mb-8' : ''}
+              class="font-merriweather  text-white  text-[1.2rem] sm:text-3xl lg:text-3xl mb-8
+                     
+                              {isModal ? ' block ' : 'hidden'}
                      inline-block smooth-text mix-blend-difference bg-black p-1
                      "
             >
