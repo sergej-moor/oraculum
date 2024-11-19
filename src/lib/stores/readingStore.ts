@@ -17,16 +17,59 @@ interface ReadingStore {
 function createReadingStore() {
   const introMessages = ["Let me draw the cards that will reveal your path..."];
 
-  function getCardReadingMessages(card: TarotCard): string[] {
-    return [
-      `Ah, the ${card.name}...`,
-      card.interpretation.present[0],
-      "Let us see what the next card reveals...",
+  function getCardIntroduction(cardName: string): string {
+    const phrases = [
+      `Behold, ${cardName}!`,
+      `Ah yes, ${cardName}.`,
+      `Ah, the ${cardName} reveals itself.`,
+      `Here we have ${cardName}.`,
+      `Oh, it’s ${cardName}!`,
+      `The ${cardName} has come forth.`,
+      `Ah, look, ${cardName}!`,
+      `Ah, the wisdom of ${cardName} graces us.`,
+      `Ah, what a draw: ${cardName}!`,
+      `Hmmm... the ${cardName} makes an appearance.`,
+      `Oh, how intriguing, ${cardName}.`,
+      `Ah, ${cardName}—a sign from beyond.`,
+      `And here it is: ${cardName}.`,
+      `Ah, the ever-revealing ${cardName}.`,
+      `Ah, destiny speaks through ${cardName}.`,
+      `Ah, what clarity ${cardName} brings.`,
+      `Hmm, ${cardName}—how fascinating.`,
+      `Oh, ${cardName}—it holds much to consider.`,
+      `The ${cardName}—what a powerful message.`,
+      `Ah, ${cardName}, the story unfolds.`,
     ];
+
+    const randomIndex = Math.floor(Math.random() * phrases.length);
+    return phrases[randomIndex];
+  }
+
+  // Example usage:
+  console.log(getCardIntroduction("The Fool"));
+
+  function getCardReadingMessages(
+    card: TarotCard,
+    cardNumber: number
+  ): string[] {
+    let array: string[] = [];
+    switch (cardNumber) {
+      case 0:
+        array = card.interpretation.past;
+        break;
+      case 1:
+        array = card.interpretation.present;
+        break;
+      case 2:
+        array = card.interpretation.future;
+        break;
+    }
+    const randomIndex = Math.floor(Math.random() * array.length);
+    return [getCardIntroduction(card.name), array[randomIndex]];
   }
 
   const finalMessages = [
-    "And thus concludes your reading...",
+    /* "And thus concludes your reading...", */
     "Would you like to seek more guidance?",
   ];
 
@@ -89,7 +132,7 @@ function createReadingStore() {
           ...store,
           selectedCard: null,
           isReading: true,
-          currentMessages: getCardReadingMessages(card),
+          currentMessages: getCardReadingMessages(card, store.currentCardIndex),
         };
       });
     },

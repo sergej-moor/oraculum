@@ -16,6 +16,7 @@
   let error = $state<string | null>(null);
   let textElement = $state<HTMLSpanElement | null>(null);
   let imageElement = $state<HTMLImageElement | null>(null);
+  let cardFront = $state<HTMLDivElement | null>(null);
 
   // Import all card images at build time
   const images = import.meta.glob('/src/assets/cards/**/*.webp', {
@@ -64,12 +65,25 @@
       });
     }
   });
+
+
+  $effect(() => {
+    if (cardFront && isFlipped) {
+      gsap.to(cardFront, {
+        '--gradient-position': '-20%',
+        duration: 2,
+        repeat: -1,
+        ease: 'none',
+        repeatDelay: 2 
+      });
+    }
+  });
 </script>
 
 <button
   class="w-full aspect-[2/3] relative
-         {isModal ? '' : 'max-w-[70px] xs:max-w-[75px] sm:max-w-[80px] md:max-w-[100px] lg:max-w-[120px]'}
-         cursor-pointer preserve-3d transition-transform duration-700"
+
+         cursor-pointer preserve-3d transition-transform duration-700 m-1"
   style="transform-origin: center; transform: rotateY({isFlipped ? '180deg' : '0deg'});"
   on:click={onFlip}
 >
@@ -84,7 +98,9 @@
 
   <!-- Card Front -->
   <div 
-    class="absolute inset-0 w-full h-full backface-hidden bg-white rounded-lg  overflow-hidden"
+    bind:this={cardFront}
+    class="absolute inset-0 w-full h-full backface-hidden bg-white rounded-lg overflow-hidden border-white border-2 holo-card
+          {isModal ? 'rounded-3xl' : ''}"
     style="transform: rotateY(180deg);"
   >
     {#if error}
@@ -100,21 +116,22 @@
         <div 
           class="absolute bottom-0 left-0 right-0
                  bg-gradient-to-t from-black/60 via-black/30 to-transparent
-                 h-1/3 pointer-events-none"
+                 h-1/3 pointer-events-none "
         ></div>
         <div 
           class="absolute bottom-0 left-0 right-0 my-2 sm:my-4
                  text-center"
         >
-          <div class="inline-block px-2 sm:px-4">
+          <div class="inline-block px-2 sm:px-4 ">
             <span
               bind:this={textElement}
-              class="font-chokokutai font-bold text-white
-                     text-xs sm:text-base md:text-base lg:text-lg
-                     inline-block smooth-text
+              class="font-merriweather  text-white 
+                     text-xs lg:text-base 
+                              {isModal ? 'text-2xl sm:text-3xl lg:text-4xl mb-4' : ''}
+                     inline-block smooth-text mix-blend-difference bg-black p-1
                      "
             >
-              {cardData?.name ?? `Card ${cardNumber}`}
+              {cardData?.name }
             </span>
           </div>
         </div>
@@ -140,5 +157,30 @@
     perspective: 1000px;
     will-change: transform;
     letter-spacing: 0.5px;
+  }
+  .holo-card {
+    --gradient-position: 120%;
+    position: relative;
+  }
+
+  .holo-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      135deg,
+      transparent 0%,
+      transparent 40%,
+      rgba(255, 255, 255, 0.4) 45%,
+      rgba(255, 255, 255, 0.7) 50%,
+      rgba(255, 255, 255, 0.4) 55%,
+      transparent 60%,
+      transparent 100%
+    );
+    background-position-x: var(--gradient-position);
+    background-size: 400% 100%;
+    mix-blend-mode: overlay;
+    pointer-events: none;
+    z-index: 2;
   }
 </style> 

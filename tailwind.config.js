@@ -14,6 +14,7 @@ export default {
       },
       fontFamily: {
         chokokutai: ["Chokokutai", "serif"],
+        merriweather: ["Merriweather", "serif"],
       },
     },
   },

@@ -8,3 +8,10 @@
   font-style: normal;
   font-display: swap;
 }
+@font-face {
+  font-family: "Merriweather";
+  src: url("/Merriweather-Bold.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}

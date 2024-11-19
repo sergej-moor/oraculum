@@ -1,6 +1,6 @@
 <script lang="ts">
   import { readingStore } from '$lib/stores/readingStore';
-  import { tarotCards } from '../data/tarotCards';
+  import { tarotCards, type TarotCard } from '../data/tarotCards';
   import Card from './Card.svelte';
   import Modal from './Modal.svelte';
   import gsap from 'gsap';
@@ -81,7 +81,7 @@
 
 <div class="flex flex-col h-full w-full p-1 md:p-2">
   {#if cards.length > 0}
-    <div class="grid grid-rows-2 grid-cols-3 gap-0.5 xs:gap-1 md:gap-2 lg:gap-3 h-[calc(100%-100px)]">
+    <div class="grid  grid-cols-3 gap-0.5 xs:gap-1 md:gap-2 lg:gap-3 h-[calc(100%-100px)]">
       {#each cards as card, i}
         <div 
           class="flex items-center justify-center w-full h-full"

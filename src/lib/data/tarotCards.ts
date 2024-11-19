@@ -117,7 +117,7 @@ export const tarotCards: TarotCard[] = [
   {
     id: 1,
     name: "The Magician",
-    image: "$assets/cards/major/the_magician_2024-11-16T00-23-23-311Z.webp",
+    image: "$assets/cards/major/the_magician.webp",
     interpretation: {
       symbolic: {
         meaning:
