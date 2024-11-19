@@ -101,7 +101,7 @@
         class="text-xs text-slate-400  animate-bounce "
         transition:fade={{ duration: 500 }}
       >
-        Click to continue...
+        Click here to continue...
       </div>
     {:else if gameState !== 'complete'}
       <div 
