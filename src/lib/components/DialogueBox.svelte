@@ -11,6 +11,7 @@
   let isTyping = $state(false);
   let typingSpeed = 20;
   let timeoutId: number;
+  let previousMessages = $state<string[]>([]);
 
   async function typeMessage(message: string) {
     isTyping = true;
@@ -25,9 +26,7 @@
 
     isTyping = false;
 
-    // If this was the last message, automatically complete
     if (messageIndex === messages.length - 1) {
-      // Small delay before completion to make it feel more natural
       setTimeout(() => {
         onComplete();
       }, 500);
@@ -43,10 +42,13 @@
     }
   }
 
-  // Reset and start typing when messages change
+  // Only reset and start typing when we get a new set of messages
   $effect(() => {
-    if (messages.length > 0) {
+    if (messages.length > 0 && 
+        (previousMessages.length === 0 || 
+         JSON.stringify(messages) !== JSON.stringify(previousMessages))) {
       messageIndex = 0;
+      previousMessages = messages;
       typeMessage(messages[0]);
     }
   });

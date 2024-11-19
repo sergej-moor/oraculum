@@ -59,7 +59,9 @@
   });
 
   function handleCardClick(index: number) {
-    if (!$readingStore.isFlipping && 
+    if ($readingStore.isFlipping) return;
+    
+    if (!$readingStore.flippedCards[index] && 
         !isAnimating && 
         !$readingStore.isReading && 
         index === $readingStore.currentCardIndex) {
@@ -67,6 +69,8 @@
       setTimeout(() => {
         readingStore.showModal(index);
       }, 700);
+    } else if ($readingStore.flippedCards[index]) {
+      readingStore.showModal(index);
     }
   }
 

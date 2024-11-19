@@ -74,7 +74,8 @@
         duration: 2,
         repeat: -1,
         ease: 'none',
-        repeatDelay: 2 
+        repeatDelay: 2,
+        delay: 2
       });
     }
   });
@@ -127,7 +128,7 @@
               bind:this={textElement}
               class="font-merriweather  text-white 
                      text-xs lg:text-base 
-                              {isModal ? 'text-2xl sm:text-3xl lg:text-4xl mb-4' : ''}
+                              {isModal ? 'text-[1.2rem] sm:text-3xl lg:text-3xl mb-8' : ''}
                      inline-block smooth-text mix-blend-difference bg-black p-1
                      "
             >
