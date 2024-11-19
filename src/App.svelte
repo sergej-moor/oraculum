@@ -2,6 +2,7 @@
   import { readingStore } from '$lib/stores/readingStore';
   import Deck from '$lib/components/Deck.svelte';
   import DialogueBox from '$lib/components/DialogueBox.svelte';
+  import StarField from '$lib/components/StarField.svelte';
 
   function handleDialogueComplete() {
     const store = $readingStore;
@@ -16,12 +17,13 @@
   }
 </script>
 
-<div class="overflow-hidden bg-repeat flex flex-col justify-center items-center min-h-screen w-screen" 
+<div class="overflow-hidden bg-repeat flex flex-col justify-center items-center min-h-screen w-screen relative" 
      style="background-image: url('/background.png');">
+  <StarField />
   <div class="overflow-hidden bg-repeat flex flex-col md:flex-row md:justify-center 
               w-full max-w-[95%] md:max-w-screen-md lg:max-w-screen-lg 
               h-[90vh] md:h-[70vh] lg:h-[80vh] 
-              items-center gap-4">
+              items-center gap-4 relative z-10">
     <div class="xs:max-w-sm w-full md:w-2/5 h-1/2 md:h-full flex flex-col gap-2 md:gap-4 ">
       <img 
         src="/fortune-teller.webp" 

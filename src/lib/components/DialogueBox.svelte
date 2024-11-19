@@ -110,7 +110,10 @@
       >
         {getRevealMessage(currentCardIndex)}
       </div>
+
     {/if}
+    {:else}
+<div class="text-xs opacity-0">.</div>
   {/if}
 </div>
 
