@@ -3,14 +3,16 @@
   import type { TarotCard } from '$lib/data/tarotCards';
   import gsap from 'gsap';
 
-  const { cardData, isFlipped, onFlip, position, cardNumber, isModal = false } = $props<{
+  const { cardData, isFlipped, onFlip, position, cardNumber, isModal = false, isNextCard = false } = $props<{
     cardData?: TarotCard;
     isFlipped: boolean;
     onFlip: () => void;
     position: number;
     cardNumber: number;
     isModal?: boolean;
+    isNextCard?: boolean;  
   }>();
+
 
   let cardImage = $state<string>('');
   let error = $state<string | null>(null);
@@ -89,7 +91,7 @@
   on:click={onFlip}
 >
   <!-- Card Back -->
-  <div class="absolute inset-0 w-full h-full backface-hidden">
+  <div class="absolute inset-0 w-full h-full backface-hidden {isNextCard ? 'animate-wiggle' : ''}">
     <img 
       src={cardBack} 
       alt="Card back" 

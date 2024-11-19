@@ -17,6 +17,15 @@ export default {
         merriweather: ["Merriweather", "serif"],
       },
     },
+    keyframes: {
+      wiggle: {
+        "0%,100%": { transform: "rotate(0deg)" },
+        "50%": { transform: "rotate(2deg)" },
+      },
+    },
+    animation: {
+      wiggle: "wiggle 2s infinite",
+    },
   },
   plugins: [],
 };

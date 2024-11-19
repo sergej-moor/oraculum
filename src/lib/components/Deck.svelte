@@ -97,6 +97,8 @@
             onFlip={() => handleCardClick(i)}
             position={i}
             cardNumber={i + 1}
+            isNextCard={!$readingStore.flippedCards[i] && i === $readingStore.currentCardIndex}
+
           />
         </div>
       {/each}
